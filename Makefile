@@ -1,9 +1,11 @@
 PROJECT = aiows
 
-PYTHON_VERSION = 3.6
+PYTHON_VER = python3.7
+PYTHON_SYSTEM_PATH = "$(readlink $(which $(PYTHON_VER)))"
+
 REQUIREMENTS = requirements.txt
-REQUIREMENTS_TEST = requirements-test.txt
-VIRTUAL_ENV := .venv$(PYTHON_VERSION)
+REQUIREMENTS_DEV = requirements-dev.txt
+VIRTUAL_ENV := $(dir $(abspath $(lastword $(MAKEFILE_LIST)))).venv$(PYTHON_VERSION)
 PYTHON := $(VIRTUAL_ENV)/bin/python
 PIP_CONF = pip.conf
 PYPI = dev
@@ -18,13 +20,13 @@ tests_coverage: venv
 
 venv_init:
 	if [ ! -d $(VIRTUAL_ENV) ]; then \
-		virtualenv -p python$(PYTHON_VERSION) --prompt="($(PROJECT)) " $(VIRTUAL_ENV); \
+		virtualenv -p $(PYTHON_SYSTEM_PATH) --prompt="($(PROJECT)) " $(VIRTUAL_ENV); \
 	fi
 
 venv:  venv_init
 	cp $(PIP_CONF) $(VIRTUAL_ENV)/
 	$(VIRTUAL_ENV)/bin/pip install -r $(REQUIREMENTS)
-	$(VIRTUAL_ENV)/bin/pip install -r $(REQUIREMENTS_TEST)
+	$(VIRTUAL_ENV)/bin/pip install -r $(REQUIREMENTS_DEV)
 	ln -sf $(VIRTUAL_ENV)/bin/activate activate
 
 

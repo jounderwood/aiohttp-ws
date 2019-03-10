@@ -1,10 +1,10 @@
 import logging
-
-from aiows import ActionsRegistry, send
 from marshmallow import Schema, fields
 
+from aiows import ActionsRegistry, send
+
 logger = logging.getLogger(__name__)
-actions = ActionsRegistry(prefix='not_root')
+actions = ActionsRegistry(prefix="not_root")
 
 
 class MessageToClient(Schema):
@@ -14,5 +14,5 @@ class MessageToClient(Schema):
 
 @actions.on(payload_schema=MessageToClient())
 async def send_to_client(payload, **kwargs):
-    logger.info('Action parameters %s %s', payload, kwargs)
-    await send(payload['client_id'], payload['message'])
+    logger.info("Action parameters %s %s", payload, kwargs)
+    await send(str(payload["client_id"]), payload["message"])
