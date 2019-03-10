@@ -2,7 +2,7 @@ from yzconfig import YzConfig
 
 
 class Settings(YzConfig):
-    PUBSUB_CHANNEL_NAME = 'aiows'
+    PUBSUB_CHANNEL_NAME = 'aiohttp_ws'
 
     HEARTBEAT = 30
     AUTOPING = True
@@ -22,5 +22,5 @@ class RedisSettings(YzConfig):
         assert self.HOST, "REDIS_HOST is empty"
 
 
-settings = Settings('AIOWS_')
-redis_settings = RedisSettings('AIOWS_REDIS_')
+settings = Settings('AIOHTTP_WS_')
+redis_settings = RedisSettings('AIOHTTP_WS_REDIS_')

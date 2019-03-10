@@ -1,7 +1,7 @@
 import logging
 from marshmallow import Schema, fields
 
-from aiows import ActionsRegistry, send
+from aiohttp_ws import ActionsRegistry, send
 
 logger = logging.getLogger(__name__)
 actions = ActionsRegistry(prefix="not_root")

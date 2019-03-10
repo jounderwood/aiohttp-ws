@@ -1,4 +1,4 @@
-# aiows changelog
+# aiohttp_ws changelog
 
 
 Version 0.1

@@ -8,10 +8,10 @@ from aiohttp.web_ws import WebSocketResponse
 from marshmallow import Schema
 from marshmallow import ValidationError
 
-from aiows.exceptions import RequestValidationError
-from aiows.messages import send_directly
-from aiows.utils.format import underscore_text
-from aiows.utils.inspect import Spec
+from aiohttp_ws.exceptions import RequestValidationError
+from aiohttp_ws.messages import send_directly
+from aiohttp_ws.utils.format import underscore_text
+from aiohttp_ws.utils.inspect import Spec
 
 logger = logging.getLogger(__name__)
 

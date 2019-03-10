@@ -1,16 +1,15 @@
-PROJECT = aiows
+PROJECT = aiohttp_ws
 
 PYTHON_VER = python3.7
 PYTHON_SYSTEM_PATH = "$(readlink $(which $(PYTHON_VER)))"
 
 REQUIREMENTS = requirements.txt
 REQUIREMENTS_DEV = requirements-dev.txt
-VIRTUAL_ENV := $(dir $(abspath $(lastword $(MAKEFILE_LIST)))).venv$(PYTHON_VERSION)
+VIRTUAL_ENV := $(dir $(abspath $(lastword $(MAKEFILE_LIST)))).venv
 PYTHON := $(VIRTUAL_ENV)/bin/python
 PIP_CONF = pip.conf
-PYPI = dev
+TEST_PYPI = https://test.pypi.org/legacy/
 TEST_SETTINGS = settings_test
-
 
 tests: venv
 	$(VIRTUAL_ENV)/bin/py.test
@@ -38,11 +37,12 @@ clean_pyc:
 
 clean: clean_venv clean_pyc
 
+
 package:
-	$(PYTHON) setup.py sdist
+	$(PYTHON) setup.py sdist bdist_wheel
 
 pkg_upload:
-	$(PYTHON) setup.py sdist upload -r $(PYPI)
+	twine upload dist/*
 
-pkg_register:
-	$(PYTHON) setup.py sdist register -r $(PYPI)
+pkg_upload_test:
+	twine upload --repository-url $(TEST_PYPI) dist/*

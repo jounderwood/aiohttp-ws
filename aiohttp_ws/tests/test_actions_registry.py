@@ -1,7 +1,7 @@
 import pytest
 
 from marshmallow import Schema, fields
-from aiows.actions_registry import ActionsRegistry
+from aiohttp_ws.actions_registry import ActionsRegistry
 
 
 class Incoming(Schema):

@@ -4,9 +4,9 @@ from typing import Union
 
 from aiohttp.web_ws import WebSocketResponse
 
-from aiows.constants import MSG_DESTINATION_KEY, MessageCustomDestinations, ErrorActionTypes
-from aiows.exceptions import RequestValidationError
-from aiows.utils.format import camelcase
+from aiohttp_ws.constants import MSG_DESTINATION_KEY, MessageCustomDestinations, ErrorActionTypes
+from aiohttp_ws.exceptions import RequestValidationError
+from aiohttp_ws.utils.format import camelcase
 from .redis import get_redis_lazy
 from .settings import settings
 
