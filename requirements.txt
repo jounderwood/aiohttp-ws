@@ -1,0 +1,5 @@
+aiohttp>=3.4.4
+aioredis>=1.1.0
+dataclasses
+marshmallow>=3.0.0rc4
+yzconfig>=1.0

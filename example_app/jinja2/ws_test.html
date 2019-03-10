@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Web socket debug</title>
+</head>
+<body>
+<p>
+  Client: {{ client_id }}<br>
+</p>
+<p>
+  {% for action, data in actions.items() %}
+    <button onclick="send('{{ action }}')">{{ action }}</button>
+    <!--<input size="70" id="{{ action }}" {% if not data %} hidden value="{}" {% else %} value="{{ data }}" {% endif %}><br>-->
+    <input size="70" id="{{ action }}" value="{}"><br>
+  {% endfor %}
+</p>
+<hr/>
+<p><button onclick="cons.innerHTML = ''">Clear</button></p>
+<div id="console"></div>
+
+<script>
+    var cons = document.getElementById('console');
+    var ws;
+
+    start('ws://localhost:8080/ws/?id={{client_id}}');
+
+    function write(msg) {
+        var line = document.createElement('div');
+        line.innerHTML = msg + '<br/>';
+        if (cons.firstChild) {
+            cons.insertBefore(line, cons.firstChild);
+        } else {
+            cons.appendChild(line)
+        }
+    }
+
+    function error(msg) {
+        write('<div style="color:darkred">' + msg + '</div>');
+    }
+
+    function sys(msg) {
+        write('<div style="color:blue">' + msg + '</div>');
+    }
+
+    function incoming(msg) {
+        write('<span style="color:red">INCOMING:' + new Date() + '<br></span>' + msg + '<br>');
+    }
+    function outcoming(msg) {
+        write('<span style="color:green">OUTCOMING:' + new Date() + '<br></span>' + msg + '<br>');
+    }
+
+    function send(action, payload) {
+        var data = JSON.stringify({
+            "actionType": action,
+            "requestId": '' + new Date().getTime(),
+            "payload": JSON.parse(document.getElementById(action).value || payload || {})
+        });
+
+        ws.send(data);
+        outcoming(data)
+    }
+
+    function start(websocketServerLocation) {
+        ws = new WebSocket(websocketServerLocation);
+        ws.onopen = function (e) {
+            sys('WS connection opened');
+        };
+        ws.onmessage = function (e) {
+            incoming(e.data)
+        };
+        ws.onerror = function (e) {
+            console.log(e);
+            error('Connection error');
+        };
+
+        ws.onclose = function (e) {
+            sys('Connection closed');
+            setTimeout(function () {
+                start(websocketServerLocation)
+            }, 1000);
+        };
+    }
+</script>
+</body>
+</html>
